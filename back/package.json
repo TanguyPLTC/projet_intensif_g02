@@ -1,8 +1,8 @@
 {
-  "name": "aslin",
+  "name": "intensif02-back",
   "version": "1.0.0",
-  "description": "Aslin project",
-  "author": "Antonin Huaut",
+  "description": "Intensif02 project",
+  "author": "Intensif02",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",

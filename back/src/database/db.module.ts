@@ -11,7 +11,7 @@ import { AppConfigModule } from 'src/utils/modules/config.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'sqlite',
-        database: 'db',
+        database: 'database.db',
         synchronize: true,
         entities: [config.get<string>('TYPEORM_ENTITIES')],
         migrations: [config.get<string>('TYPEORM_MIGRATIONS')],

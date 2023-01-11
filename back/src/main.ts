@@ -45,14 +45,9 @@ function setupSwagger(app: INestApplication, configService: ConfigService) {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('ASLIN')
-    .setDescription('ASLIN API description')
+    .setTitle('Intensif02')
+    .setDescription('Intensif02 API description')
     .setVersion('1.0.0')
-    .addBearerAuth({
-      type: 'http',
-      scheme: 'bearer',
-      bearerFormat: 'JWT',
-    })
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
