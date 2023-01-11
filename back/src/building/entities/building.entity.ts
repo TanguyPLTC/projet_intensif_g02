@@ -18,10 +18,10 @@ export class Building implements IBuilding {
   public city: string;
 
   @Column()
-  public latitude: number;
+  public latitude: string;
 
   @Column()
-  public longitude: number;
+  public longitude: string;
 
   @Column()
   public maxPlace: number;
