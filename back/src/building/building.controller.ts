@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Put, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -35,7 +35,7 @@ export class BuildingController {
     return res.status(HttpStatus.CREATED).json(building);
   }
 
-  @Get('/available')
+  @Put('/available')
   @ApiOperation({
     summary: 'Get all available building',
     operationId: 'getAllAvailableBuilding',

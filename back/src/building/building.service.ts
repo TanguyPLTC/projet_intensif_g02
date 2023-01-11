@@ -27,7 +27,56 @@ export class BuildingService {
   public async findAvailableBuilding(
     availableBuildingDto: AvailableBuildingDto,
   ): Promise<Building[]> {
-    // TODO
-    return [];
+    const buildings = await this.buildingRepository.findBy({
+      city: availableBuildingDto.city,
+    });
+
+    const availableBuilding = [];
+    for await (const building of buildings) {
+      const usePlace = await this.getUsePlaceBuilding(
+        availableBuildingDto,
+        building,
+      );
+      if (usePlace + availableBuildingDto.needPlace <= building.maxPlace) {
+        availableBuilding.push({ ...building, usePlace: usePlace });
+      }
+    }
+
+    return availableBuilding;
+  }
+
+  // TODO CHECK SI PAS ALGO BUGUE
+  public async getUsePlaceBuilding(
+    availableBuildingDto: AvailableBuildingDto,
+    building: Building,
+  ): Promise<number> {
+    const askStart = availableBuildingDto.dateStart;
+    const askEnd = availableBuildingDto.dateEnd;
+
+    const reservations = await this.reservationRepository.find({
+      where: {
+        building: {
+          idBuilding: building.idBuilding,
+        },
+      },
+    });
+
+    const reservationsInDate = reservations.filter((reservation) => {
+      const resStart = reservation.dateStart;
+      const resEnd = reservation.dateEnd;
+      return (
+        (resStart >= askStart && resEnd <= askEnd) ||
+        (resStart <= askStart && resEnd >= askEnd) ||
+        (resEnd >= askStart && resEnd <= askEnd) ||
+        (resStart >= askStart && resStart <= askEnd)
+      );
+    });
+
+    const usePlace = reservationsInDate.reduce(
+      (use, reservation) => use + reservation.place,
+      0,
+    );
+
+    return usePlace;
   }
 }
