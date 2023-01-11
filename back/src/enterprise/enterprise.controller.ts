@@ -23,7 +23,7 @@ export class EnterpriseController {
   @Post('/')
   @ApiOperation({
     summary: 'Create as a new enterprise',
-    operationId: 'create',
+    operationId: 'createEnterprise',
   })
   public async create(
     @Res() res: Response,

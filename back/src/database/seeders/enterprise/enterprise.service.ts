@@ -4,7 +4,7 @@ import { Enterprise } from 'src/enterprise/entities/enterprise.entity';
 import { IEnterprise } from 'src/enterprise/interfaces/enterprise.interface';
 import { Repository } from 'typeorm';
 
-import { words } from './data';
+import { datas } from './data';
 
 @Injectable()
 export class EnterpriseSeederService {
@@ -16,13 +16,13 @@ export class EnterpriseSeederService {
   async create(): Promise<IEnterprise[]> {
     const changed: IEnterprise[] = [];
 
-    for (const word of words) {
+    for (const data of datas) {
       const dbEnterprise = await this.enterpriseRepository.findOneBy({
-        name: word.name,
+        name: data.name,
       });
 
       if (!dbEnterprise) {
-        changed.push(await this.enterpriseRepository.save(word));
+        changed.push(await this.enterpriseRepository.save(data));
       }
     }
 

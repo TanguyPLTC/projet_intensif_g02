@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 
+import { BuildingSeederService } from './building/building.service';
 import { EnterpriseSeederService } from './enterprise/enterprise.service';
 
 @Injectable()
@@ -8,13 +9,14 @@ export class Seeder {
 
   constructor(
     private readonly enterpriseSeederService: EnterpriseSeederService,
+    private readonly buildingSeederService: BuildingSeederService,
   ) {}
 
   async seed() {
     try {
-      const completed = await this.enterprise();
+      await this.enterprise();
+      await this.building();
       this.logger.log('Seeding completed successfully');
-      return completed;
     } catch (ex) {
       this.logger.error('Seeding failed');
       this.logger.error(ex.message, ex.stack);
@@ -23,14 +25,28 @@ export class Seeder {
 
   async enterprise() {
     try {
-      const createdEnterprises = await this.enterpriseSeederService.create();
-      const changes = createdEnterprises.filter(
+      const created = await this.enterpriseSeederService.create();
+      const changes = created.filter(
         (nullValueOrCreatedLanguage) => nullValueOrCreatedLanguage,
       ).length;
 
       this.logger.log(`Enterprise (${changes}) seeding completed successfully`);
     } catch (ex) {
       this.logger.error('Enterprise seeding failed');
+      this.logger.error(ex.message, ex.stack);
+    }
+  }
+
+  async building() {
+    try {
+      const created = await this.buildingSeederService.create();
+      const changes = created.filter(
+        (nullValueOrCreatedLanguage) => nullValueOrCreatedLanguage,
+      ).length;
+
+      this.logger.log(`Building (${changes}) seeding completed successfully`);
+    } catch (ex) {
+      this.logger.error('Building seeding failed');
       this.logger.error(ex.message, ex.stack);
     }
   }
