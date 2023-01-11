@@ -19,12 +19,12 @@ export class CreateBuildingDto {
   @IsString()
   @MaxLength(32)
   @IsNotEmpty()
-  latitude: string;
+  latitude: number;
 
   @IsString()
   @MaxLength(32)
   @IsNotEmpty()
-  longitude: string;
+  longitude: number;
 
   @IsNumber()
   availablePlace: number;

@@ -7,7 +7,7 @@ export const datas: IBuilding[] = [
     postalCode: '14000',
     city: 'Caen',
     availablePlace: 64,
-    latitude: '49.1804708715538',
-    longitude: '-0.3924453194709552',
+    latitude: 49.1804708715538,
+    longitude: -0.3924453194709552,
   },
 ];

@@ -4,8 +4,8 @@ export interface IBuilding {
   readonly adress: string;
   readonly postalCode: string;
   readonly city: string;
-  readonly latitude: string;
-  readonly longitude: string;
+  readonly latitude: number;
+  readonly longitude: number;
 
   readonly availablePlace: number;
 }
