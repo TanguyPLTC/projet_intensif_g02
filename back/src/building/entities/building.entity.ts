@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Reservation } from 'src/reservation/entities/reservation.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { IBuilding } from '../interfaces/building.interface';
 
@@ -23,5 +24,12 @@ export class Building implements IBuilding {
   public longitude: number;
 
   @Column()
-  public availablePlace: number;
+  public maxPlace: number;
+
+  @OneToMany(() => Reservation, (reservation) => reservation.idReservation, {
+    nullable: true,
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  public reservations: Reservation[];
 }

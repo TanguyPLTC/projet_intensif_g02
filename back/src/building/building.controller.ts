@@ -3,6 +3,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
 import { BuildingService } from './building.service';
+import { AvailableBuildingDto } from './dto/available-building';
 import { CreateBuildingDto } from './dto/create-building';
 
 @ApiTags('building')
@@ -32,5 +33,20 @@ export class BuildingController {
     const building = await this.buildingService.create(buildingDto);
 
     return res.status(HttpStatus.CREATED).json(building);
+  }
+
+  @Get('/available')
+  @ApiOperation({
+    summary: 'Get all available building',
+    operationId: 'getAllAvailableBuilding',
+  })
+  public async getAllAvailableBuilding(
+    @Res() res: Response,
+    @Body() availableBuildingDto: AvailableBuildingDto,
+  ) {
+    const buildings = await this.buildingService.findAvailableBuilding(
+      availableBuildingDto,
+    );
+    return res.status(HttpStatus.OK).json(buildings);
   }
 }

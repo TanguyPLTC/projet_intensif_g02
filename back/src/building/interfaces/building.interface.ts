@@ -7,5 +7,5 @@ export interface IBuilding {
   readonly latitude: number;
   readonly longitude: number;
 
-  readonly availablePlace: number;
+  readonly maxPlace: number;
 }

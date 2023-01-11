@@ -1,11 +1,11 @@
-import { IsNumber } from 'class-validator';
+import { IsDate, IsNumber } from 'class-validator';
 
 export class CreateReservationDto {
-  @IsNumber()
-  hourStart: number;
+  @IsDate()
+  dateStart: Date;
 
-  @IsNumber()
-  hourEnd: number;
+  @IsDate()
+  dateEnd: Date;
 
   @IsNumber()
   place: number;

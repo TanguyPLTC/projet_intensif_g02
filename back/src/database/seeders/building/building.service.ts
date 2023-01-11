@@ -21,7 +21,7 @@ export class BuildingSeederService {
         adress: data.adress,
         postalCode: data.postalCode,
         city: data.city,
-        availablePlace: data.availablePlace,
+        maxPlace: data.maxPlace,
         latitude: data.latitude,
         longitude: data.longitude,
       });

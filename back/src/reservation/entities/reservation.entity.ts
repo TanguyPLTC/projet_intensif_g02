@@ -9,11 +9,11 @@ export class Reservation implements IReservation {
   @PrimaryGeneratedColumn()
   public idReservation: number;
 
-  @Column()
-  public hourStart: number;
+  @Column({ type: 'datetime' })
+  public dateStart: Date;
 
-  @Column()
-  public hourEnd: number;
+  @Column({ type: 'datetime' })
+  public dateEnd: Date;
 
   @Column()
   public place: number;

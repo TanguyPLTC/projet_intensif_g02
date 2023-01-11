@@ -40,8 +40,8 @@ export class ReservationService {
     // TODO CHECK IF BUILDING AVAILABLE FOR PLACE AND HOURS
 
     const reservation = new Reservation();
-    reservation.hourStart = reservationDto.hourStart;
-    reservation.hourEnd = reservationDto.hourEnd;
+    reservation.dateStart = reservationDto.dateStart;
+    reservation.dateEnd = reservationDto.dateEnd;
     reservation.place = reservationDto.place;
     reservation.enterprise = enterprise;
     reservation.building = building;

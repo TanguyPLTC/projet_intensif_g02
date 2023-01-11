@@ -1,6 +1,6 @@
 export interface IReservation {
   readonly idReservation: number;
-  readonly hourStart: number;
-  readonly hourEnd: number;
+  readonly dateStart: Date;
+  readonly dateEnd: Date;
   readonly place: number;
 }

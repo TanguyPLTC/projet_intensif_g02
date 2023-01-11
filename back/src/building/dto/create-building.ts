@@ -27,5 +27,5 @@ export class CreateBuildingDto {
   longitude: number;
 
   @IsNumber()
-  availablePlace: number;
+  maxPlace: number;
 }
