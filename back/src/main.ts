@@ -14,7 +14,10 @@ async function bootstrap() {
   app.enableCors(); // TODO config CORS
   app.useLogger(new Logger(NODE_ENV === 'dev' ? 'debug' : 'warn'));
 
-  app.setGlobalPrefix(NODE_ENV === 'dev' ? 'api' : 'back/api');
+  if (NODE_ENV === 'dev') {
+    app.setGlobalPrefix('api');
+  }
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
