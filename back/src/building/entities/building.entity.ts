@@ -8,8 +8,20 @@ export class Building implements IBuilding {
   public idBuilding: number;
 
   @Column()
-  public location: string;
+  public adress: string;
 
   @Column()
-  public place: number;
+  public postalCode: string;
+
+  @Column()
+  public city: string;
+
+  @Column()
+  public latitude: string;
+
+  @Column()
+  public longitude: string;
+
+  @Column()
+  public availablePlace: number;
 }

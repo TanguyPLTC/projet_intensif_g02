@@ -2,15 +2,15 @@ import { Controller, Get, HttpStatus, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
-@ApiTags('building')
-@Controller('building')
-export class BuildingController {
+@ApiTags('reservation')
+@Controller('reservation')
+export class ReservationController {
   @Get('/')
   @ApiOperation({
-    summary: 'Get all building',
-    operationId: 'getAllBuilding',
+    summary: 'Get all reservation',
+    operationId: 'getAllReservation',
   })
-  public async getAllBuilding(@Res() res: Response) {
+  public async getAllReservation(@Res() res: Response) {
     return res.status(HttpStatus.OK).json({});
   }
 }

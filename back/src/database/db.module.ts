@@ -24,4 +24,4 @@ import { AppConfigModule } from 'src/utils/modules/config.module';
     }),
   ],
 })
-export class PostgresDatabaseProviderModule {}
+export class SQliteDatabaseProviderModule {}
