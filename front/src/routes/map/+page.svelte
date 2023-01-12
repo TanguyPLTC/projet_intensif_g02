@@ -7,7 +7,9 @@
 
 	let map: L.Map;
 
-	L.Icon.Default.imagePath = base + '/';
+	if (!!L?.Icon) {
+		L.Icon.Default.imagePath = base + '/';
+	}
 
 	type building = {
 		idBuilding: number;
