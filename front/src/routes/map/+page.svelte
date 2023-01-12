@@ -87,6 +87,6 @@
 
 </script>
 
-<h1>Welcome to SvelteKit</h1>
+<h1 class="container">Bâtiments disponibles:</h1>
 <div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
 <svelte:window on:resize={resizeMap} />
