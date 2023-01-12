@@ -1,9 +1,6 @@
 import { IsDate, IsNumber, IsString } from 'class-validator';
 
 export class AvailableBuildingDto {
-  @IsString()
-  city: string;
-
   @IsDate()
   dateStart: Date;
 
@@ -12,4 +9,9 @@ export class AvailableBuildingDto {
 
   @IsNumber()
   needPlace: number;
+}
+
+export class FindAvailableBuildingDto extends AvailableBuildingDto {
+  @IsString()
+  city: string;
 }

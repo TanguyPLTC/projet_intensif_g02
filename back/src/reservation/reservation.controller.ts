@@ -20,6 +20,16 @@ export class ReservationController {
     return res.status(HttpStatus.OK).json(reservations);
   }
 
+  @Get('/')
+  @ApiOperation({
+    summary: 'Get all reservation',
+    operationId: 'getAllReservation',
+  })
+  public async getAllReservation(@Res() res: Response) {
+    const reservations = await this.reservationService.findAll();
+    return res.status(HttpStatus.OK).json(reservations);
+  }
+
   @Post('/')
   @ApiOperation({
     summary: 'Create as a new reservation',

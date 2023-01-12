@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Reservation } from '../reservation/entities/reservation.entity';
-import { AvailableBuildingDto } from './dto/available-building';
+import { AvailableBuildingDto, FindAvailableBuildingDto } from './dto/available-building';
 import { CreateBuildingDto } from './dto/create-building';
 import { Building } from './entities/building.entity';
 
@@ -25,19 +25,20 @@ export class BuildingService {
   }
 
   public async findAvailableBuilding(
-    availableBuildingDto: AvailableBuildingDto,
+    findAvailableBuildingDto: FindAvailableBuildingDto,
   ): Promise<Building[]> {
     const buildings = await this.buildingRepository.findBy({
-      city: availableBuildingDto.city,
+      city: findAvailableBuildingDto.city,
     });
 
     const availableBuilding = [];
     for await (const building of buildings) {
       const usePlace = await this.getUsePlaceBuilding(
-        availableBuildingDto,
+        findAvailableBuildingDto,
         building,
       );
-      if (usePlace + availableBuildingDto.needPlace <= building.maxPlace) {
+
+      if (this.hashEnoughPlace(usePlace, findAvailableBuildingDto, building)) {
         availableBuilding.push({ ...building, usePlace: usePlace });
       }
     }
@@ -45,7 +46,15 @@ export class BuildingService {
     return availableBuilding;
   }
 
-  // TODO CHECK SI PAS ALGO BUGUE
+  private hashEnoughPlace(
+    usePlace: number,
+    availableBuildingDto: AvailableBuildingDto,
+    building: Building,
+  ) {
+    return usePlace + availableBuildingDto.needPlace <= building.maxPlace;
+  }
+
+  // Algo au scale catastrophique => MVP...
   public async getUsePlaceBuilding(
     availableBuildingDto: AvailableBuildingDto,
     building: Building,
@@ -78,5 +87,17 @@ export class BuildingService {
     );
 
     return usePlace;
+  }
+
+  public async isBuildingAvailable(
+    availableBuildingDto: AvailableBuildingDto,
+    building: Building,
+  ): Promise<boolean> {
+    const usePlace = await this.getUsePlaceBuilding(
+      availableBuildingDto,
+      building,
+    );
+
+    return this.hashEnoughPlace(usePlace, availableBuildingDto, building);
   }
 }

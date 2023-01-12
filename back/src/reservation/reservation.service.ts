@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { NotFoundException } from '@nestjs/common/exceptions';
+import { ConflictException, NotFoundException } from '@nestjs/common/exceptions';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import { BuildingService } from '../building/building.service';
 import { Building } from '../building/entities/building.entity';
 import { Enterprise } from '../enterprise/entities/enterprise.entity';
 import { CreateReservationDto } from './dto/create-reservation.dto';
@@ -17,6 +18,7 @@ export class ReservationService {
     private readonly enterpriseRepository: Repository<Enterprise>,
     @InjectRepository(Building)
     private readonly buildingRepository: Repository<Building>,
+    private readonly buildingService: BuildingService,
   ) {}
 
   public async findAll(): Promise<Reservation[]> {
@@ -37,12 +39,18 @@ export class ReservationService {
       throw new NotFoundException("Enterprise or building doesn't exist");
     }
 
-    // TODO CHECK IF BUILDING AVAILABLE FOR PLACE AND HOURS
+    const available = await this.buildingService.isBuildingAvailable(
+      reservationDto,
+      building,
+    );
+    if (!available) {
+      throw new ConflictException('Building is not available');
+    }
 
     const reservation = new Reservation();
     reservation.dateStart = reservationDto.dateStart;
     reservation.dateEnd = reservationDto.dateEnd;
-    reservation.place = reservationDto.place;
+    reservation.place = reservationDto.needPlace;
     reservation.enterprise = enterprise;
     reservation.building = building;
 
