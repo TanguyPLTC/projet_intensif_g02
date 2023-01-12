@@ -2,6 +2,7 @@
 	import { reservation } from './store.js';
 	import { goto } from '$app/navigation';
 	import { storable } from '../../lib/storable.js';
+	import { base } from '$app/paths';
 	const availableBuildingsStore = storable('availableBuildings');
 
 	let requestResult: [];
@@ -41,7 +42,7 @@
 			}
 
 			availableBuildingsStore.set({ res: requestResult, request: reqData });
-			goto('/map');
+			goto(base + '/map');
 		} catch (ex) {
 			error = ex as Error;
 		} finally {

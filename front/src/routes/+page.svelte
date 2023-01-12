@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { base } from '$app/paths';
 
-	onMount(() => goto('/reservation'));
+	onMount(() => goto(base + '/reservation'));
 </script>
