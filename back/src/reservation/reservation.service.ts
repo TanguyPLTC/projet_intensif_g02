@@ -33,6 +33,12 @@ export class ReservationService {
     });
   }
 
+  public async deleteById(reservationId: number) {
+    return await this.reservationRepository.delete({
+      idReservation: reservationId,
+    });
+  }
+
   public async create(
     reservationDto: CreateReservationDto,
   ): Promise<Reservation> {

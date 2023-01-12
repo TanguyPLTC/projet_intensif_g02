@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -51,5 +51,19 @@ export class ReservationController {
     const reservation = await this.reservationService.create(reservationDto);
 
     return res.status(HttpStatus.CREATED).json(reservation);
+  }
+
+  @Delete('/:reservationId')
+  @ApiOperation({
+    summary: 'Delete a reservation',
+    operationId: 'deleteReservation',
+  })
+  public async delete(
+    @Param('reservationId') reservationId: number,
+    @Res() res: Response,
+  ) {
+    const reservation = await this.reservationService.deleteById(reservationId);
+
+    return res.status(HttpStatus.OK).json(reservation);
   }
 }
