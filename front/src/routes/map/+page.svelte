@@ -115,7 +115,7 @@
 
 			requestResult = await requestPromise.json();
 
-			goto('/list');
+			goto('/list?success=true');
 		} catch (ex) {
 			error = ex as Error;
 		} finally {
@@ -125,7 +125,7 @@
 
 </script>
 <div style="height:90vh;width:90%;margin:0 auto;">
-  <h1>Bâtiments disponibles :</h1>
+  <h1 class="container">Bâtiments disponibles :</h1>
   <div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
 </div>
 <svelte:window on:resize={resizeMap} />
