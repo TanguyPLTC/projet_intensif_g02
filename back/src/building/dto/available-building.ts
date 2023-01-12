@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsString, Min } from 'class-validator';
 
 export class FindAvailableBuildingDto {
   @ApiProperty()
@@ -16,6 +16,7 @@ export class FindAvailableBuildingDto {
 
   @ApiProperty()
   @IsNumber()
+  @Min(1)
   needPlace: number;
 }
 
