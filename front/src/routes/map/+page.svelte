@@ -7,7 +7,7 @@
 
 	let map: L.Map;
 
-	if (!!L?.Icon) {
+	if (!!L?.Icon?.Default?.imagePath) {
 		L.Icon.Default.imagePath = base + '/';
 	}
 
