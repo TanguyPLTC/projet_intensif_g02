@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Param, Post, Res } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -20,13 +20,22 @@ export class ReservationController {
     return res.status(HttpStatus.OK).json(reservations);
   }
 
-  @Get('/')
+  @Get('/enterprise/:enterpriseId')
   @ApiOperation({
-    summary: 'Get all reservation',
-    operationId: 'getAllReservation',
+    summary: 'Get all reservation by enterprise Id',
+    operationId: 'getAllReservationByEnterpriseId',
   })
-  public async getAllReservation(@Res() res: Response) {
-    const reservations = await this.reservationService.findAll();
+  public async getAllReservationByEnterpriseId(
+    @Param('enterpriseId') enterpriseId: number,
+    @Res() res: Response,
+  ) {
+    if (Number.isNaN(+enterpriseId)) {
+      return res.status(HttpStatus.BAD_REQUEST).json({});
+    }
+
+    const reservations = await this.reservationService.findAllByEnterpriseId(
+      enterpriseId,
+    );
     return res.status(HttpStatus.OK).json(reservations);
   }
 

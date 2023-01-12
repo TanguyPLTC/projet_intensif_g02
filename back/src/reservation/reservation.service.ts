@@ -25,6 +25,14 @@ export class ReservationService {
     return await this.reservationRepository.find();
   }
 
+  public async findAllByEnterpriseId(
+    enterpriseId: number,
+  ): Promise<Reservation[]> {
+    return await this.reservationRepository.find({
+      where: { enterprise: { idEnterprise: enterpriseId } },
+    });
+  }
+
   public async create(
     reservationDto: CreateReservationDto,
   ): Promise<Reservation> {
