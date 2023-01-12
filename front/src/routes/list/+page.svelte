@@ -1,6 +1,9 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
+
+	const success = $page.url.searchParams.get('success');
 
 	type building = {
 		idBuilding: number;
@@ -75,6 +78,10 @@
 </script>
 
 <div class="container">
+	{#if success === 'true'}
+		<div class="alert alert-success" role="alert">Votre réservation a été enregistrée !</div>
+	{/if}
+
 	{#if loading}
 		<h1>Veuillez patienter...</h1>
 	{:else if error && error.message}
