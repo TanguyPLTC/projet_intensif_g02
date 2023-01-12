@@ -64,6 +64,3 @@
 		<h1>Aucune réservation</h1>
 	{/if}
 </div>
-
-	</ul>
-</div>
