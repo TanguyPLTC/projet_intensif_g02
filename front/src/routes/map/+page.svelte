@@ -7,18 +7,18 @@
 
 	let map: L.Map;
 
-  L.Icon.Default.imagePath = "../../../"
+	L.Icon.Default.imagePath = base + '/';
 
-  type building = {
-    idBuilding: number;
-    adress: string;
-    postalCode: string;
-    city: string;
-    latitude: string;
-    longitude: string;
-    maxPlace: number;
-    usePlace: number;
-  };
+	type building = {
+		idBuilding: number;
+		adress: string;
+		postalCode: string;
+		city: string;
+		latitude: string;
+		longitude: string;
+		maxPlace: number;
+		usePlace: number;
+	};
 
 	let requestResult: [];
 	let requestStatus: number;
