@@ -6,6 +6,8 @@
 
   let map: L.Map;
 
+  L.Icon.Default.imagePath = "../../../"
+
   type building = {
     idBuilding: number;
     adress: string;
