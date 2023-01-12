@@ -77,9 +77,9 @@
 			marker
 				.bindPopup(
 					`<b>${build.adress}</b>
-        <br>${build.city}, ${build.postalCode}</br>
-        <b>Places disponibles: ${build.maxPlace - build.usePlace}</b>
-        <Button class="btn btn-primary popupButton">Réserver</Button>`
+        <br>${build.city}, ${build.postalCode}</b>
+        <br>Places disponibles: ${build.maxPlace - build.usePlace}</b>
+        <br><div style="display: flex;justify-content: center;align-items: center;"><Button class="btn btn-sm mt-2 btn-primary popupButton">Réserver</Button></div>`
 				)
 				.on('popupopen', (a) => {
 					var popUp = a.target.getPopup();
