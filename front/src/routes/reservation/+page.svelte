@@ -1,7 +1,10 @@
 <script lang="ts">
 	import { reservation } from './store.js';
+	import { goto } from '$app/navigation';
+	import { storable } from '../../lib/storable.js';
+	const availableBuildingsStore = storable('availableBuildings');
 
-	let requestResult: string;
+	let requestResult: [];
 	let requestStatus: number;
 	let requestPromise: Response;
 	let loading: boolean = false;
@@ -30,8 +33,14 @@
 				throw new Error(requestPromise.statusText);
 			}
 
-			const json = await requestPromise.json();
-			requestResult = JSON.stringify(json);
+			requestResult = await requestPromise.json();
+
+			if (requestResult.length === 0) {
+				throw new Error('Aucun résultat pour la demande');
+			}
+
+			availableBuildingsStore.set(requestResult);
+			goto('/map');
 		} catch (ex) {
 			error = ex as Error;
 		} finally {
@@ -41,15 +50,15 @@
 </script>
 
 <div class="container">
-	<h3>Réservation:</h3>
+	<h3>Bâtiments disponibles :</h3>
 
 	{#if loading}
 		<p>Veuillez patienter...</p>
-	{:else if error}
+	{:else if error && error.message}
 		<h3 style="color: red">{error.message}</h3>
 	{/if}
 
-	{#if requestStatus === 200}
+	{#if requestStatus === 200 && requestResult && requestResult.length > 0}
 		<p>OK</p>
 	{:else if loading === false}
 		<form>
@@ -60,32 +69,33 @@
 			<div class="mb-3">
 				<label for="numberPers" class="form-label">Nombre de personnes</label>
 				<input
-						type="number"
-						class="form-control"
-						id="numberPers"
-						bind:value={$reservation.needPlace}
+					type="number"
+					class="form-control"
+					id="numberPers"
+					bind:value={$reservation.needPlace}
 				/>
 			</div>
 			<div class="mb-3">
 				<label for="dateStart" class="form-label">Date d'arrivée</label>
 				<input
-						type="datetime-local"
-						class="form-control"
-						id="dateStart"
-						bind:value={$reservation.dateStart}
+					type="datetime-local"
+					class="form-control"
+					id="dateStart"
+					bind:value={$reservation.dateStart}
 				/>
 			</div>
 			<div class="mb-3">
 				<label for="dateEnd" class="form-label">Date de départ</label>
 				<input
-						type="datetime-local"
-						class="form-control"
-						id="dateEnd"
-						bind:value={$reservation.dateEnd}
+					type="datetime-local"
+					class="form-control"
+					id="dateEnd"
+					bind:value={$reservation.dateEnd}
 				/>
 			</div>
 
-			<button type="submit" class="btn btn-primary" on:click={doPost}>Envoyer réservation</button>
+			<button type="submit" class="btn btn-primary" on:click={doPost}>Afficher les bâtiments</button
+			>
 		</form>
 	{/if}
 </div>
