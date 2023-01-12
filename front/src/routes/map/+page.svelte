@@ -127,7 +127,7 @@
 
 </script>
 <div style="height:90vh;width:90%;margin:0 auto;">
-  <h1>Bâtiments disponibles :</h1>
+  <h1 class="container">Bâtiments disponibles :</h1>
   <div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
 </div>
 <svelte:window on:resize={resizeMap} />
