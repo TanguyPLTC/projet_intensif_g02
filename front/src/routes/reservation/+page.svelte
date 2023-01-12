@@ -54,15 +54,15 @@
 	<h3>Bâtiments disponibles :</h3>
 
 	{#if loading}
-		<div className="spinner-border" role="status">
-			<span className="visually-hidden">Veuillez patienter...</span>
-		</div>
+		<div class="spinner-border" role="status" />
+		<p>Veuillez patienter...</p>
 	{:else if error && error.message}
 		<h3 style="color: red">{error.message}</h3>
 	{/if}
 
 	{#if requestStatus === 200 && requestResult && requestResult.length > 0}
-		<p>OK</p>
+		<div class="spinner-border" role="status" />
+		<p>Veuillez patienter...</p>
 	{:else if loading === false}
 		<form>
 			<div class="mb-3">
