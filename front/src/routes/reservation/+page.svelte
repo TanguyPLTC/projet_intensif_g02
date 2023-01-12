@@ -53,7 +53,9 @@
 	<h3>Bâtiments disponibles :</h3>
 
 	{#if loading}
-		<p>Veuillez patienter...</p>
+		<div className="spinner-border" role="status">
+			<span className="visually-hidden">Veuillez patienter...</span>
+		</div>
 	{:else if error && error.message}
 		<h3 style="color: red">{error.message}</h3>
 	{/if}
