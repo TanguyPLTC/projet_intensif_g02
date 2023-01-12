@@ -89,5 +89,5 @@
 
 <h1>Welcome to SvelteKit</h1>
 <!-- <p>{JSON.stringify(buildingList)}</p> -->
-<div style="height:400px;width:100%" use:mapAction />
+<div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
 <svelte:window on:resize={resizeMap} />
