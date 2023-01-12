@@ -115,7 +115,7 @@
 
 			requestResult = await requestPromise.json();
 
-			goto('/list');
+			goto('/list?success=true');
 		} catch (ex) {
 			error = ex as Error;
 		} finally {
