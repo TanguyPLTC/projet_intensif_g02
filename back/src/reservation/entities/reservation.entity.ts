@@ -22,6 +22,7 @@ export class Reservation implements IReservation {
     nullable: false,
     cascade: true,
     onDelete: 'CASCADE',
+    eager: true,
   })
   public enterprise: Relation<Enterprise>;
 
@@ -29,6 +30,7 @@ export class Reservation implements IReservation {
     nullable: false,
     cascade: true,
     onDelete: 'CASCADE',
+    eager: true,
   })
   public building: Relation<Building>;
 }
