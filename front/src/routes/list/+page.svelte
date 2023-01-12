@@ -25,7 +25,9 @@
 	let error: Error;
 	let loading = true;
 
-	onMount(async () => {
+	onMount(reloadData);
+
+	async function reloadData() {
 		try {
 			loading = true;
 			const res = await fetch(
@@ -41,7 +43,7 @@
 		} finally {
 			loading = false;
 		}
-	});
+	}
 
 	function formatDate(date: string) {
 		return dayjs(date).format('DD/MM/YYYY HH:mm');
@@ -49,6 +51,26 @@
 
 	function buildAddress(building: building) {
 		return `${building.adress}, ${building.postalCode} ${building.city}`;
+	}
+
+	let currentReservationId = 0;
+
+	function setCurrentId(id: number) {
+		currentReservationId = id;
+	}
+
+	async function deleteById() {
+		const res = await fetch(
+			`https://intensif02.ensicaen.fr/api/reservation/${currentReservationId}`,
+			{
+				method: 'DELETE'
+			}
+		);
+		const data = await res.json();
+
+		if (data.affected > 0) {
+			reloadData();
+		}
 	}
 </script>
 
@@ -65,6 +87,7 @@
 				<th>Date de début</th>
 				<th>Date de fin</th>
 				<th>Nombre de place</th>
+				<th />
 			</thead>
 			<tbody>
 				{#each data as reservation}
@@ -73,6 +96,14 @@
 						<td>{formatDate(reservation.dateStart)}</td>
 						<td>{formatDate(reservation.dateEnd)}</td>
 						<td>{reservation.place}</td>
+						<td
+							><button
+								class="btn btn-danger"
+								data-bs-toggle="modal"
+								data-bs-target="#deleteModal"
+								on:click={() => setCurrentId(reservation.idReservation)}>Annuler</button
+							></td
+						>
 					</tr>
 				{/each}
 			</tbody>
@@ -80,4 +111,28 @@
 	{:else}
 		<h1>Aucune réservation</h1>
 	{/if}
+</div>
+
+<div
+	class="modal fade"
+	id="deleteModal"
+	tabindex="-1"
+	aria-labelledby="deleteModalLabel"
+	aria-hidden="true"
+>
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="deleteModalLabel">Confirmation</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" />
+			</div>
+			<div class="modal-body">Êtes-vous sûr de vouloir annuler cette réservation ?</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Retour</button>
+				<button type="button" class="btn btn-primary" data-bs-dismiss="modal" on:click={deleteById}
+					>Annuler la réservation</button
+				>
+			</div>
+		</div>
+	</div>
 </div>
