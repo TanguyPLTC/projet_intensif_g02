@@ -1,7 +1,5 @@
 <script lang="ts">
   import * as L from 'leaflet';
-  // If you're playing with this in the Svelte REPL, import the CSS using the
-  // syntax in svelte:head instead. For normal development, this is better.
   import 'leaflet/dist/leaflet.css';
 
   /** @type {import('./$types').PageData} */  
