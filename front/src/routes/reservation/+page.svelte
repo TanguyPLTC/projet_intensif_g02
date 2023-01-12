@@ -15,17 +15,18 @@
 		try {
 			error = null;
 			loading = true;
+			const reqData = {
+				city: $reservation.city,
+				needPlace: $reservation.needPlace,
+				dateStart: $reservation.dateStart,
+				dateEnd: $reservation.dateEnd
+			};
 			requestPromise = await fetch('https://intensif02.ensicaen.fr/api/building/available', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({
-					city: $reservation.city,
-					needPlace: $reservation.needPlace,
-					dateStart: $reservation.dateStart,
-					dateEnd: $reservation.dateEnd
-				})
+				body: JSON.stringify(reqData)
 			});
 
 			requestStatus = requestPromise.status;
@@ -39,7 +40,7 @@
 				throw new Error('Aucun résultat pour la demande');
 			}
 
-			availableBuildingsStore.set(requestResult);
+			availableBuildingsStore.set({ res: requestResult, request: reqData });
 			goto('/map');
 		} catch (ex) {
 			error = ex as Error;
