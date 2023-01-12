@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
-	const success = $page.url.searchParams.get('success');
+	let success = $page.url.searchParams.get('success');
 
 	type building = {
 		idBuilding: number;
@@ -63,6 +63,8 @@
 	}
 
 	async function deleteById() {
+		success = '';
+
 		const res = await fetch(
 			`https://intensif02.ensicaen.fr/api/reservation/${currentReservationId}`,
 			{
