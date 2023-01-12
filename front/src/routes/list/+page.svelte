@@ -35,7 +35,7 @@
 		try {
 			loading = true;
 			const res = await fetch(
-				`https://intensif02.ensicaen.fr/api/reservation/enterprise/${enterpriseId}`,
+				import.meta.env.VITE_API_ENDPOINT + `/reservation/enterprise/${enterpriseId}`,
 				{
 					method: 'GET'
 				}
@@ -67,7 +67,7 @@
 		hideSuccess = true;
 
 		const res = await fetch(
-			`https://intensif02.ensicaen.fr/api/reservation/${currentReservationId}`,
+			import.meta.env.VITE_API_ENDPOINT + `/reservation/${currentReservationId}`,
 			{
 				method: 'DELETE'
 			}

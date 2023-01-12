@@ -1,15 +1,24 @@
 <script lang="ts">
-	import * as L from 'leaflet';
 	import 'leaflet/dist/leaflet.css';
+
 	import { storable } from '../../lib/storable';
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
-	let map: L.Map;
+	let mounted = false;
+	let leaflet: any;
+	let map: any;
 
-	if (!!L?.Icon?.Default?.imagePath) {
-		L.Icon.Default.imagePath = base + '/';
-	}
+	onMount(async () => {
+		if (browser) {
+			leaflet = await import('leaflet');
+			leaflet.Icon.Default.imagePath = '/';
+		}
+
+		mounted = true;
+	});
 
 	type building = {
 		idBuilding: number;
@@ -22,12 +31,8 @@
 		usePlace: number;
 	};
 
-	let requestResult: [];
 	let requestStatus: number;
 	let requestPromise: Response;
-	let loading: boolean = false;
-
-	let error: Error | null;
 
 	const availableBuildingsStore = storable('availableBuildings');
 
@@ -46,13 +51,15 @@
 	}
 
 	function createMap(container: string | HTMLElement) {
-		let m = L.map(container).setView(averageCoords(), 13);
-		L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-			attribution: `&copy;<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>,
+		let m = leaflet.map(container).setView(averageCoords(), 13);
+		leaflet
+			.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+				attribution: `&copy;<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>,
           &copy;<a href="https://carto.com/attributions" target="_blank">CARTO</a>`,
-			subdomains: 'abcd',
-			maxZoom: 19
-		}).addTo(m);
+				subdomains: 'abcd',
+				maxZoom: 19
+			})
+			.addTo(m);
 
 		return m;
 	}
@@ -75,7 +82,7 @@
 
 	function loadMarker() {
 		for (let build of buildingList) {
-			var marker = L.marker([+build.latitude, +build.longitude]).addTo(map);
+			var marker = leaflet.marker([+build.latitude, +build.longitude]).addTo(map);
 			marker
 				.bindPopup(
 					`<b>${build.adress}</b>
@@ -83,12 +90,12 @@
         <br>Places disponibles: ${build.maxPlace - build.usePlace}</b>
         <br><div style="display: flex;justify-content: center;align-items: center;"><Button class="btn btn-sm mt-2 btn-primary popupButton">Réserver</Button></div>`
 				)
-				.on('popupopen', (a) => {
+				.on('popupopen', (a: { target: { getPopup: () => any } }) => {
 					var popUp = a.target.getPopup();
 					popUp
 						.getElement()
 						.querySelector('.popupButton')
-						.addEventListener('click', (e) => {
+						.addEventListener('click', () => {
 							doPost(build.idBuilding);
 						});
 				});
@@ -97,9 +104,7 @@
 
 	async function doPost(idBuilding: number) {
 		try {
-			error = null;
-			loading = true;
-			requestPromise = await fetch('https://intensif02.ensicaen.fr/api/reservation', {
+			requestPromise = await fetch(import.meta.env.VITE_API_ENDPOINT + '/reservation', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -118,19 +123,16 @@
 				throw new Error(requestPromise.statusText);
 			}
 
-			requestResult = await requestPromise.json();
-
 			goto(base + '/list?success=true');
-		} catch (ex) {
-			error = ex as Error;
-		} finally {
-			loading = false;
-		}
+		} catch (ex) {}
 	}
 </script>
 
-<div style="height:90vh;width:90%;margin:0 auto;">
-	<h1 class="container">Bâtiments disponibles :</h1>
-	<div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
-</div>
+{#if browser && mounted}
+	<div style="height:90vh;width:90%;margin:0 auto;">
+		<h1 class="container">Bâtiments disponibles :</h1>
+		<div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
+	</div>
+{/if}
+
 <svelte:window on:resize={resizeMap} />

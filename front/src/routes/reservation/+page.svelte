@@ -22,7 +22,7 @@
 				dateStart: $reservation.dateStart,
 				dateEnd: $reservation.dateEnd
 			};
-			requestPromise = await fetch('https://intensif02.ensicaen.fr/api/building/available', {
+			requestPromise = await fetch(import.meta.env.VITE_API_ENDPOINT + '/building/available', {
 				method: 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
