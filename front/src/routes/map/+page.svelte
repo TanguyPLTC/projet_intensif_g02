@@ -14,7 +14,7 @@
 	onMount(async () => {
 		if (browser) {
 			leaflet = await import('leaflet');
-			leaflet.Icon.Default.imagePath = '/';
+			leaflet.Icon.Default.imagePath = (process.env.NODE_ENV === 'dev' ? '' : base) + '/';
 		}
 
 		mounted = true;
