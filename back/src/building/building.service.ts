@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 
 import { Reservation } from '../reservation/entities/reservation.entity';
 import { AvailableBuildingDto, FindAvailableBuildingDto } from './dto/available-building';
@@ -27,8 +27,12 @@ export class BuildingService {
   public async findAvailableBuilding(
     findAvailableBuildingDto: FindAvailableBuildingDto,
   ): Promise<Building[]> {
-    const buildings = await this.buildingRepository.findBy({
-      city: findAvailableBuildingDto.city,
+    const buildings = await this.buildingRepository.find({
+      where: {
+        city: Raw((alias) => `LOWER(${alias}) LIKE LOWER(:value)`, {
+          value: `%${findAvailableBuildingDto.city.trim()}%`,
+        }),
+      },
     });
 
     const availableBuilding = [];
