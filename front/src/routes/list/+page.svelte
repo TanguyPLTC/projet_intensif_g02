@@ -3,7 +3,8 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 
-	let success = $page.url.searchParams.get('success');
+	const success = $page.url.searchParams.get('success');
+	let hideSuccess = false;
 
 	type building = {
 		idBuilding: number;
@@ -63,7 +64,7 @@
 	}
 
 	async function deleteById() {
-		success = '';
+		hideSuccess = true;
 
 		const res = await fetch(
 			`https://intensif02.ensicaen.fr/api/reservation/${currentReservationId}`,
@@ -80,7 +81,7 @@
 </script>
 
 <div class="container">
-	{#if success === 'true'}
+	{#if !hideSuccess && success === 'true'}
 		<div class="alert alert-success" role="alert">Votre réservation a été enregistrée !</div>
 	{/if}
 
