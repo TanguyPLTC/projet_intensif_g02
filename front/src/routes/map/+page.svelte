@@ -1,9 +1,8 @@
 <script lang="ts">
   import * as L from 'leaflet';
   import 'leaflet/dist/leaflet.css';
-
-  /** @type {import('./$types').PageData} */  
-  export let data;
+  import { storable } from '../../lib/storable';
+  import { goto } from '$app/navigation';
 
   let map: L.Map;
 
@@ -15,9 +14,20 @@
     latitude: string;
     longitude: string;
     maxPlace: number;
+    usePlace: number;
   };
 
-  const buildingList:building[] = data.item;
+	let requestResult: [];
+	let requestStatus: number;
+	let requestPromise: Response;
+	let loading: boolean = false;
+
+	let error: Error | null;
+
+  const availableBuildingsStore = storable('availableBuildings');
+
+  const buildingList:building[] = $availableBuildingsStore.res;
+
 
   function averageCoords() {
     let value:[number, number]
@@ -68,25 +78,54 @@
       marker.bindPopup(
         `<b>${build.adress}</b>
         <br>${build.city}, ${build.postalCode}</br>
-        <b>Places disponibles: ${build.maxPlace}</b>
+        <b>Places disponibles: ${build.maxPlace - build.usePlace}</b>
         <Button class="btn btn-primary popupButton">Réserver</Button>`
       ).on("popupopen", (a) => {
         var popUp = a.target.getPopup()
         popUp.getElement()
         .querySelector(".popupButton")
-        .addEventListener("click", e => {book(build.idBuilding);});
+        .addEventListener("click", e => {doPost(build.idBuilding);});
       }
       );
     }  
   }
 
-  function book(id:number) {
-    //TODO: post reservation
-    console.log("Booking building " + id);
-  }
+  async function doPost(idBuilding: number) {
+		try {
+			error = null;
+			loading = true;
+			requestPromise = await fetch('https://intensif02.ensicaen.fr/api/reservation', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					dateStart: $availableBuildingsStore.request.dateStart,
+					dateEnd: $availableBuildingsStore.request.dateEnd,
+					needPlace: $availableBuildingsStore.request.needPlace,
+					idEnterprise: 1,
+          idBuilding: idBuilding
+				})
+			});
+
+			requestStatus = requestPromise.status;
+			if (requestStatus !== 201) {
+				throw new Error(requestPromise.statusText);
+			}
+
+			requestResult = await requestPromise.json();
+
+			goto('/list');
+		} catch (ex) {
+			error = ex as Error;
+		} finally {
+			loading = false;
+		}
+	}
 
 </script>
-
-<h1>Welcome to SvelteKit</h1>
-<div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
+<div style="height:90vh;width:90%;margin:0 auto;">
+  <h1>Bâtiments disponibles :</h1>
+  <div style="height:90vh;width:90%;margin:0 auto;" use:mapAction />
+</div>
 <svelte:window on:resize={resizeMap} />
