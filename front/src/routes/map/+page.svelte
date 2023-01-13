@@ -85,10 +85,10 @@
 			var marker = leaflet.marker([+build.latitude, +build.longitude]).addTo(map);
 			marker
 				.bindPopup(
-					`<b>${build.adress}</b>
+				`<b>${build.adress}</b>
         <br>${build.city}, ${build.postalCode}</b>
         <br>Places disponibles: ${build.maxPlace - build.usePlace}</b>
-        <br><div style="display: flex;justify-content: center;align-items: center;"><Button class="btn btn-sm mt-2 btn-primary popupButton">Réserver</Button></div>`
+        <br><div style="display: flex;justify-content: center;align-items: center;"><Button class="btn btn-sm mt-2 btn-primary popupButton" style="background-color: #8eafa1;border-color: #8eafa1;">Réserver</Button></div>`
 				)
 				.on('popupopen', (a: { target: { getPopup: () => any } }) => {
 					var popUp = a.target.getPopup();

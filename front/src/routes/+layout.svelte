@@ -13,9 +13,9 @@
 			</a>
 
 			<ul class="nav nav-pills">
-				<li class="nav-item"><a href={base + '/reservation'} class="nav-link">Réserver</a></li>
+				<li class="nav-item"><a href={base + '/reservation'} class="nav-link" style="color:#8eafa1">Réserver</a></li>
 				<li class="nav-item">
-					<a href={base + '/list'} class="nav-link">Voir les réservations</a>
+					<a href={base + '/list'} class="nav-link" style="color:#8eafa1">Voir les réservations</a>
 				</li>
 			</ul>
 		</header>

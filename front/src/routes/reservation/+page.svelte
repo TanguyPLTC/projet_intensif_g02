@@ -98,7 +98,7 @@
 				/>
 			</div>
 
-			<button type="submit" class="btn btn-primary" on:click={doPost}>Afficher les bâtiments</button
+			<button type="submit" class="btn btn-primary" style="background-color: #8eafa1;border-color: #8eafa1;" on:click={doPost}>Afficher les bâtiments</button
 			>
 		</form>
 	{/if}
