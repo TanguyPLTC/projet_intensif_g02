@@ -9,7 +9,8 @@
 				href={base + '/'}
 				class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none"
 			>
-				<span class="material-symbols-outlined" style="font-size: 45px;">explore</span>
+				<!-- <span class="material-symbols-outlined" style="font-size: 45px;">explore</span> -->
+				<img src="{base + '/'}plan_cubes_colaboratifs.png" alt="..." height="60px" />
 			</a>
 
 			<ul class="nav nav-pills">
